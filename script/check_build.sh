@@ -25,7 +25,9 @@ if [[ $sukses == *'#### build completed successfully'* ]]; then
     echo 
     pesan ✅ Building selesai 100%
     echo 
-else
+    
+    else
+
     echo 
     pesan ❌ Building belum selesai...
     echo 

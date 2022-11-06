@@ -28,6 +28,7 @@ cd $WORKDIR/rom/$nama_rom
 
 nama_file=$(basename out/target/product/$perangkat/*.zip)
 tautan=https://file.cloudmobx.workers.dev/$nama_rom/$perangkat/$nama_file
+maintainer=https://t.me/mobxprjkt
 
 rclone copy out/target/product/$(grep unch $CIRRUS_WORKING_DIR/build.sh -m 1 | cut -d ' ' -f 2 | cut -d _ -f 2 | cut -d - -f 1)/*.zip mobx:$(grep init $CIRRUS_WORKING_DIR/build.sh -m 1 | cut -d / -f 4)/$(grep unch $CIRRUS_WORKING_DIR/build.sh -m 1 | cut -d ' ' -f 2 | cut -d _ -f 2 | cut -d - -f 1) -P
 
@@ -49,7 +50,7 @@ echo -e \
 <b>📕 MD5 :</b> <code>"$(md5sum *zip | cut -d' ' -f1)"</code>
 <b>📘 SHA1 :</b> <code>"$(sha1sum *zip | cut -d' ' -f1)"</code>
 <b>==============================</b>
-<b>Maintainer : "$CIRRUS_REPO_OWNER"</b>
+<b>🌀 Maintainer : <a href=\"${maintainer}\">Yovie</a></b>
 " > tg.html
 TG_TEXT=$(< tg.html)
 pesan_telegram "$TG_TEXT"
@@ -87,7 +88,9 @@ if [[ $sukses == *'#### build completed successfully'* ]]; then
     upload_rom
     pesan Upload ccache..
     upload_ccache
-else
+    
+    else
+
     pesan Build belum selesai, Unggah ccache saja ❌
     pesan Upload ccache..
     upload_ccache
