@@ -1,0 +1,51 @@
+env:
+# ENCRYPTED
+  RCLONECONFIG_DRIVE: "ENCRYPTED[5fda87999f2d928dcc865c9a501197ad587561ff8d62011a9f5b799e9d5d2e33d37600bacfc8811f98af1b7c6fbe7f09]"
+  TG_TOKEN: "ENCRYPTED[9f196c4aa834d144561c19aed355c1a6dbd636e98150d73942dccbb9e9038dcde0ff0467db5ff7a6d38b4e51249d2904]"
+  TG_CHAT_ID: "ENCRYPTED[daa91e6b2946c5da8545b0d9d264d49bb8c6f8a00412dea2d4c61a0fbb902421b142dd36f46a3d43cfca314cb7e423a5]"
+  CREDENTIALS: "ENCRYPTED[07112e22b5c14f74e8020eb5f5fd6ff7a17b8e7e747b3c4880ec73d49fe22b999a79c79c84c5d9ffd082d1e196e90227]"
+  USER: "ENCRYPTED[eb4c459a0f808a13aec0a2900160550ae2200c3eb935e1c67debea2346c49c0408e81b2c1fac98adc592eb1a5a03e35e]"
+  EMAIL: "ENCRYPTED[a7e498c10492fd163b7f80afb890b9cbd742a534b5f942de30e7fdf23fb33dd402104c8fbcfd240f6d4275225f7473aa]"
+  KBUILD_BUILD_USER: "ENCRYPTED[43b0c808456ba89a6f6461a1390bcd213648dc17c8cc495b5bb77564a143603d196eea1ae757584680b71c51eb2b69e8]"
+  KBUILD_BUILD_HOST: "ENCRYPTED[125b832657dc82a83f483edabfb182dd9d49e0578cff4225b3617102177d76f03703cfaf561f7dcb382038068e77bf82]"
+
+# FLAG
+  WORKDIR: "/tmp"
+  CIRRUS_CLONE_DEPTH: "1"
+
+task:
+  name: "Setting Up, Syncing, Building and Uploading"
+  only_if: $CIRRUS_REPO_OWNER == 'c3eru'
+  timeout_in: 120m
+  container:
+    image: anggit86/ubuntu:22.04
+    cpu: 8
+    memory: 32G
+
+  Memuat-ccache_background_script:
+     - ./script/memuat_ccache.sh
+     
+  Repo-pribadi_script:
+     - git config --global user.name "$USER"
+     - git config --global user.email "$EMAIL"
+     - echo "$CREDENTIALS" > ~/.git-credentials
+     - git config --global credential.helper store --file=~/.git-credentials
+     - export KBUILD_BUILD_USER=$KBUILD_BUILD_USER
+     - export KBUILD_BUILD_HOST=$KBUILD_BUILD_USER
+     - export BUILD_USERNAME=$KBUILD_BUILD_USER
+     - export BUILD_HOSTNAME=$KBUILD_BUILD_USER
+
+
+  Sinkronisasi_script:
+     - ./script/sinkronisasi.sh
+     
+  Build-rom_script:
+     - ./script/membangun.sh
+     
+  Ccache-info_script:
+     - set -e
+     - export CCACHE_DIR=$WORKDIR/ccache
+     - ccache -s
+
+  Upload-build_script:
+     - ./script/mengemas.sh
