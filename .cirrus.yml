@@ -18,7 +18,7 @@ task:
   only_if: $CIRRUS_REPO_OWNER == 'c3eru'
   timeout_in: 120m
   container:
-    image: ${{ secrets.DOCKER_HUB_USERNAME }}/gaspoll:22.04
+    image: c3eru/gaspoll:22.04
     cpu: 8
     memory: 32G
 
