@@ -15,7 +15,7 @@ env:
 
 task:
   name: "Setting Up, Syncing, Building and Uploading"
-  only_if: $CIRRUS_REPO_OWNER == 'c3eru'
+  only_if: $CIRRUS_REPO_OWNER == 'dafhaaji'
   timeout_in: 120m
   container:
     image: dafhaaji/prjct:22.04
